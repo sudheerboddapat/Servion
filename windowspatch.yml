@@ -1,17 +1,20 @@
-- hosts: all
-  become: yes
-  serial: 4
-
+- name: windows updates
+  hosts: windows
+  gather_facts: yes
   tasks:
-    - name: Install all critical and security updates
-      win_updates:
-       category_names:
-       - CriticalUpdates
-       - SecurityUpdates
-       - UpdateRollups
-       state: installed
-      register: update_result
-
-        - name: reboot host if required
-          win_reboot:
-          when: update_result.reboot_required
+    - block:
+      - name : Installing the windows updates
+        win_updates:
+          category_names:
+            - CriticalUpdates
+            - UpdateRollups
+            - Security Updates
+          state: installed
+          # become: yes
+          # become_method: runas
+          # become_user: SYSTEM
+          log_path: C:\ansible_win_update_installed.txt
+        register: updates
+      - name: Status of above installation
+        debug: 
+          msg: "{{ updates }}"

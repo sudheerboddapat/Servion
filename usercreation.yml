@@ -1,0 +1,17 @@
+---
+- name: Add a user
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Ensure user bob is present
+      ansible.windows.win_user:
+        name: bob
+        password: B0bP4ssw0rd
+        state: present
+        groups:
+          - Users
+    - name: Create a new group
+      ansible.windows.win_group:
+        name: deploy
+        description: Deploy Group
+        state: present

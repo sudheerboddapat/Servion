@@ -1,6 +1,6 @@
 ---
 - name: Add a user
-  hosts: all
+  hosts: windows
   gather_facts: false
   tasks:
     - name: Ensure user bob is present

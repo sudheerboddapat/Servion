@@ -1,6 +1,6 @@
 - name: windows updates
   hosts: all
-  gather_facts: no
+  gather_facts: yes
   tasks:
     - block:
       - name : Installing the windows updates

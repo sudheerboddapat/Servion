@@ -1,0 +1,36 @@
+- name: Create virtual mechine
+  hosts: localhost
+  collections:
+   - azure.azcollection
+  connection: local
+  tasks:
+    - name: installl Azure SDK modules
+      ansible.builtin.shell: |
+        pip3 install -r /mydata/requirements-azure.txt
+    - name: Create a resource group for vnet
+      azure.azcollection.azure_rm_resourcegroup:
+        name: Ansible-COE
+        location: Central US
+    - name: Create virtual network
+      azure_rm_virtualnetwork:
+        resource_group: Ansible-COE
+        name: testVnet
+        address_prefixes: 10.0.0.0/16
+    - name: Add subnet
+      azure_rm_subnet:
+        resource_group: Ansible-COE
+        name: testSubnet
+        address_prefix: 10.0.1.0/24
+        virtual_network: testVnet
+    - name: Create minimal VM with defaults
+      azure_rm_virtualmachine:
+        resource_group: Ansible-COE
+        name: testing
+        admin_username: ansible
+        admin_password: ansible@123
+        vm_size: Standard_B1ms
+        image:
+          offer: RHEL
+          publisher: RedHat
+          sku: 8.2
+          version: latest

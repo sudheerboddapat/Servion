@@ -1,5 +1,5 @@
 - name: windows updates
-  hosts: Windows
+  hosts: all
   gather_facts: yes
   tasks:
     - block:
